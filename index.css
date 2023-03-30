@@ -1,0 +1,41 @@
+h3 {
+    padding-bottom: 5px;
+    padding-top: 3px;
+}
+
+.genre {
+    border: solid 2px;
+    border-radius: 3px;
+    margin: 5px;
+    white-space: nowrap;
+    background-color: #ccc;
+    padding: 2px;
+}
+
+.btn {
+    margin: 2px;
+}
+
+.dropdown-toggle {
+    background-color: lightblue;
+}
+
+.artist {
+    margin-bottom: 50px;
+    display: inline;
+    height: 250px
+}
+
+.artist-albumcover {
+    max-width: 200px;
+    margin-right: 30px;
+}
+
+.artist-albumcover img {
+    width: 120%;
+    display: inline;
+}
+
+.artist-info {
+    max-height: 250px;
+}

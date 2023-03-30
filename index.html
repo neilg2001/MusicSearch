@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+   <title> 493 Artist Search</title>
+   <!--Bootstrap-->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      crossorigin="anonymous"></script>
+   <!--Custom Style-->
+   <link rel="stylesheet" type="text/css" href="index.css">
+   <!--Vue-->
+   <script src="https://unpkg.com/vue@3"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+</head>
+
+<body>
+   <div id='app'>
+      <nav class="navbar navbar-default">
+         <div class="container">
+            <div class="navbar-header">
+               <h3>493 Artist Search</h3>
+            </div>
+         </div>
+      </nav>
+      <div class="container">
+         <div class = "row searchbar">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+               <h4>Enter the name of the artist and press enter: </h4>
+               <input v-on:keyup.enter="search()" type="text" v-model="search_text">
+            </div>
+            <span></span>
+         </div>
+
+         <div class="col-lg-12 col-md-12 col-sm-12">
+            <h4>
+               Search Result (Total {{resultCount}} Found.)
+            </h4>
+
+            <div>
+               <button v-on:click="filter('All')" v-bind:class="{btn: genreFilter.includes('All')}">ALL</button>
+               <span v-for="genre in genres">
+                  <button v-on:click="filter(genre)" v-bind:class="{btn: genreFilter.includes(genre)}">
+                     {{genre}}
+                  </button>
+               </span>
+            </div>
+            <h4>
+               List of results
+            </h4>
+         </div>
+      </div>
+
+
+      <div class="container">
+         <div class="dropdown">
+            <button type="button" id="menu" class="dropdown-toggle" data-toggle="dropdown">
+               Sort list of results by:
+               <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="menu">
+               <li class="dropdown-item" href="#" v-on:click="sortType = 'Reset to original'; sort('Reset to original');">Reset to original</li>
+               <li class="dropdown-item" href="#" v-on:click="sortType = 'Collection Name'; sort('Collection Name');">Collection Name</li>
+               <li class="dropdown-item" href="#" v-on:click="sortType = 'Price'; sort('Price');">Price</li>
+            </ul>
+         </div>
+
+         <div v-if="!resultsFound">
+            <img src="loading.gif">
+         </div>
+
+         <div v-for="result in filtered" v-if="resultsFound">
+            <div class = "col-lg-6 col-md-6 col-sm-6 artist">
+               <div class=" artist-albumcover col-sm-4">
+                  <img v-bind:src="result.artworkUrl100">
+               </div>
+               <div class="artist-info col-sm-6">
+                  <ul class="nav nav-tabs">
+                     <li class="active"><a data-toggle="tab" v-bind:href="'#description'+result.trackId">Description</a></li>
+                     <li><a data-toggle="tab" v-bind:href="'#track_info'+result.trackId">Track Info.</a></li>
+                  </ul>
+                  <div class="tab-content">
+                     <div class="tab-pane active" v-bind:id="'description'+result.trackId">
+                        <p><b> genre: </b> {{ result.primaryGenreName }} </p>
+                        <p><b> Artist Name: </b> {{ result.artistName }} </p>
+                        <p><b> Collection Name: </b> {{ result.collectionName }} </p>
+                        <p><b> Price: </b> {{ result.trackPrice }} </p>
+                        <p><b> Kind: </b> {{ result.kind }} </p>
+                        <p><b> Preview: </b> <a v-bind:href="result.trackViewUrl" target="_blank">Link</a></p>
+                     </div>
+
+                     <div class="tab-pane" v-bind:id="'track_info'+result.trackId">
+                        <p><b> Track ID: </b> {{ result.trackId }} </p>
+                        <p><b> Country: </b> {{ result.country }} </p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+       </div>
+   </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
